@@ -1,0 +1,12 @@
+/db.sqlite3
+/user/migrations/
+/tanaman/migrations/
+/hasil_pertanian/migrations/
+/request/migrations/
+/cropnesia/__pycache__/
+/venv/
+/user/__pycache__/
+/tanaman/__pycache__/
+/hasil_pertanian/__pycache__/
+/request/__pycache__/
+/cropnesia/__pycache__/
