@@ -4,7 +4,7 @@ from .models import User,Admin,Pemerintah,Petani
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("user_id",'username','name','role','daerah')
+        fields = ("user_id",'username','name','email','role','daerah')
 
 class PemerintahSerializerGet(serializers.ModelSerializer):
     user = UserSerializer()
