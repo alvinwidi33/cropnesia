@@ -20,6 +20,7 @@ class User(AbstractUser):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     username = models.CharField(max_length=255, blank=False, default="default_username_value", unique=True)
     name = models.CharField(max_length=255, blank=False, default="default_name")
+    email = models.CharField(max_length=255, blank=False, default="default_email")
     password = models.CharField(max_length=255, editable=True, default="default_password", blank=False)
     role = models.CharField(max_length=255, choices=ROLES, default="Petani")
     daerah = models.CharField(max_length=255, choices=DAERAH, blank=False, default="default_daerah")
