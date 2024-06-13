@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'hasil_pertanian',
     'request',
     'tanaman',
-    'user'
+    'user',
+    'negosiasi_request'
 ]
 
 MIDDLEWARE = [
@@ -85,10 +86,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
-        'USER': "postgres.jawzqzymyevxdgqfplpf",
+        'USER': "postgres.zmbdhdsnfvvyokdmqwqa",
         'PASSWORD': 'MamaLulu99%',
         'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
-        'PORT': '5432',
+        'PORT': '6543',
     }
 }
 
@@ -135,4 +136,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://cropnesia.vercel.app"
 ]

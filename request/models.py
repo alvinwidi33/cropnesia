@@ -11,3 +11,5 @@ class Request(models.Model):
     id_hasil_pertanian = models.OneToOneField(HasilPertanian, on_delete=models.CASCADE)
     status_request = models.CharField(max_length=32, choices=STATUS, default="Belum Dikonfirmasi")
     datetime_request=models.DateTimeField(auto_now=True)
+    message = models.CharField(max_length=2048, blank=False, null=False, default="default_negosiasi")
+    is_delete = models.BooleanField(default=False)
