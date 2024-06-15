@@ -190,9 +190,7 @@ def get_token_by_user(request, token_key):
         return Response({"error": "User is not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([is_admin])
 def get_list_petani_daerah(request, daerah):
-    petanis = Petani.objects.filter(user__daerah=daerah)
+    petanis = Petani.objects.filter(user__daerah=daerah,user__role='Petani')
     serializer = PetaniSerializerGet(petanis, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
