@@ -87,7 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
-        'USER': "postgres.pwebpwxgmfaymzqllvuy",
+        'USER': "postgres.nyiowksgkovchudoadkx",
         'PASSWORD': 'MamaLulu99%',
         'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
         'PORT': '6543',
@@ -146,3 +146,15 @@ REST_FRAMEWORK = {
     ],
 }
 AUTH_USER_MODEL = 'user.User'
+
+SIMPLE_JWT = {
+    "USER_ID_FIELD": "pk",
+}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'your-email@gmail.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
