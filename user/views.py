@@ -99,7 +99,7 @@ def add_user(request):
         html_message = html_message.replace('{{ password }}', password)
         
         subject = 'Informasi Akun User Cropnesia'
-        from_email = 'Cropnesia@gmail.com'
+        from_email = 'settings.EMAIL_HOST_USER'
         to_email = [email]
         try:
             send_mail(subject, '', from_email, to_email, html_message=html_message)
