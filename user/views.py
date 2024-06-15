@@ -191,6 +191,6 @@ def get_token_by_user(request, token_key):
 
 @api_view(['GET'])
 def get_list_petani_daerah(request, daerah):
-    petanis = Petani.objects.filter(user__daerah=daerah,user__role='Petani')
+    petanis = Petani.objects.filter(user__daerah=daerah)
     serializer = PetaniSerializerGet(petanis, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
