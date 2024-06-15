@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'hasil_pertanian',
     'request',
@@ -86,7 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
-        'USER': "postgres.yviqcbedwyukyahvtmci",
+        'USER': "postgres.pwebpwxgmfaymzqllvuy",
         'PASSWORD': 'MamaLulu99%',
         'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
         'PORT': '6543',
@@ -138,3 +139,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://cropnesia.vercel.app"
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+AUTH_USER_MODEL = 'user.User'

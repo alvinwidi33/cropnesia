@@ -28,7 +28,13 @@ class PetaniSerializerPost(serializers.ModelSerializer):
         model = Petani
         fields = ("petani_id",'user')
 
-class AdminSerializer(serializers.ModelSerializer):
+class AdminSerializerGet(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Admin
+        fields = ("admin_id",'user')
+
+class AdminSerializerPost(serializers.ModelSerializer):
     class Meta:
         model = Admin
         fields = ("admin_id",'user')
