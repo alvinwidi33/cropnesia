@@ -30,12 +30,16 @@ def update_hasil_pertanian(request, id):
 
 @api_view(['GET'])
 def get_list_hasil_pertanian(request):
-    hasil_pertanian = HasilPertanian.objects.all()
+    hasil_pertanian = HasilPertanian.objects.all().order_by('id_tanaman__daerah__user__daerah')
     serializer = HasilPertanianGet(hasil_pertanian, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def get_list_hasil_pertanian_daerah(request, daerah):
-    hasil_pertanian = HasilPertanian.objects.filter(id_tanaman__daerah__user__daerah = daerah)
+def get_list_hasil_pertanian_daerah(request, daerah, jenis_tanaman):
+    hasil_pertanian = HasilPertanian.objects.filter(
+        id_tanaman__daerah__user__daerah=daerah, 
+        id_tanaman__jenis_tanaman=jenis_tanaman
+    ).order_by('id_tanaman__daerah__user__daerah')
+    
     serializer = HasilPertanianGet(hasil_pertanian, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
