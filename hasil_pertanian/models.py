@@ -6,6 +6,7 @@ class HasilPertanian(models.Model):
     STATUS = [
         ("Gagal Panen", "Gagal Panen"),
         ("Berhasil Panen", "Berhasil Panen"),
+        ("Belum Dikonfirmasi","Belum Dikonfirmasi")
     ]
     id_tanaman = models.OneToOneField(Tanaman, on_delete=models.CASCADE)
     kuantitas = models.FloatField(null=False, blank=False, default=0)
