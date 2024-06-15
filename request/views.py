@@ -32,7 +32,7 @@ def verify_request(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     # Update the request status to 'Accepted'
-    serializer = RequestSerializerPost(permintaan, data={'status_request': 'Accepted'}, partial=True)
+    serializer = RequestSerializerPost(permintaan, data={'status_request': 'Terima'}, partial=True)
     if serializer.is_valid():
         serializer.save()
 

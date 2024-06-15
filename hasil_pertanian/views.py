@@ -39,7 +39,7 @@ def get_list_hasil_pertanian_daerah(request, daerah, jenis_tanaman):
     hasil_pertanian = HasilPertanian.objects.filter(
         id_tanaman__daerah__user__daerah=daerah, 
         id_tanaman__jenis_tanaman=jenis_tanaman
-    ).order_by('id_tanaman__daerah__user__daerah')
+    ).order_by('id_tanaman__nama_tanaman')
     
     serializer = HasilPertanianGet(hasil_pertanian, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
