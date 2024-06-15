@@ -1,13 +1,11 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from hasil_pertanian.models import HasilPertanian
 from request.models import Request
-from request.serializers import RequestSerializerPost
-from tanaman.models import Tanaman
-from user.models import Pemerintah
-from user.serializers import *
+from request.serializers import *
+from django.shortcuts import get_object_or_404
 
 from tanaman.models import Tanaman
 
@@ -33,45 +31,40 @@ def verify_request(request, id):
     except Request.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = RequestSerializerPost(permintaan, data=request.data, partial=True)
-
+    # Update the request status to 'Accepted'
+    serializer = RequestSerializerPost(permintaan, data={'status_request': 'Accepted'}, partial=True)
     if serializer.is_valid():
         serializer.save()
 
-        # If the request is accepted, transfer the padi
-        if request.data.get('status_request') == 'Terima':
-            id_pemerintah_A = permintaan.id_hasil_pertanian.id_tanaman.daerah.pemerintah_id
-            id_pemerintah_B = permintaan.id_pemerintah_request.daerah.pemerintah_id
+        # Update the quantities in HasilPertanian for both Pemerintah A and B
+        hasil_pertanian_a = permintaan.id_hasil_pertanian
+        pemerintah_b = permintaan.id_pemerintah_request
 
-            try:
-                # Pemerintah A
-                hasil_pertanian_A = HasilPertanian.objects.get(id=permintaan.id_hasil_pertanian.id)
-                hasil_pertanian_A.kuantitas -= permintaan.id_hasil_pertanian.kuantitas
-                hasil_pertanian_A.save()
+        # Get daerah of Pemerintah A and B
+        daerah_a = hasil_pertanian_a.id_tanaman.daerah.user.daerah
+        daerah_b = pemerintah_b.user.daerah
 
-                # Pemerintah B
-                tanaman_b, created = Tanaman.objects.get_or_create(
-                    daerah_id=id_pemerintah_B,
-                    nama_tanaman=hasil_pertanian_A.id_tanaman.nama_tanaman,
-                    defaults={'jenis_tanaman': hasil_pertanian_A.id_tanaman.jenis_tanaman}
-                )
+        # Check if Pemerintah B has the crop
+        try:
+            hasil_pertanian_b = HasilPertanian.objects.get(
+                id_tanaman=hasil_pertanian_a.id_tanaman,
+                id_tanaman__daerah__user__daerah=daerah_b
+            )
+            hasil_pertanian_b.kuantitas += hasil_pertanian_a.kuantitas
+            hasil_pertanian_b.save()
+        except HasilPertanian.DoesNotExist:
+            # If Pemerintah B doesn't have the crop, create a new entry
+            HasilPertanian.objects.create(
+                id_tanaman=hasil_pertanian_a.id_tanaman,
+                kuantitas=hasil_pertanian_a.kuantitas,
+                harga_hasil_pertanian=hasil_pertanian_a.harga_hasil_pertanian,
+                status_panen=hasil_pertanian_a.status_panen,
+                daerah=daerah_b  # Set daerah to Pemerintah B's daerah
+            )
 
-                hasil_pertanian_B, created = HasilPertanian.objects.get_or_create(
-                    id_tanaman=tanaman_b,
-                    defaults={
-                        'kuantitas': 0,
-                        'harga_hasil_pertanian': hasil_pertanian_A.harga_hasil_pertanian,
-                        'status_panen': hasil_pertanian_A.status_panen,
-                        'datetime_panen': hasil_pertanian_A.datetime_panen,
-                    }
-                )
-
-                hasil_pertanian_B.kuantitas += permintaan.id_hasil_pertanian.kuantitas
-                hasil_pertanian_B.save()
-
-            except HasilPertanian.DoesNotExist:
-                return Response({"detail": "Pemerintah A does not have the requested padi."}, status=status.HTTP_400_BAD_REQUEST)
+        # Subtract the quantity from Pemerintah A
+        hasil_pertanian_a.kuantitas -= permintaan.id_hasil_pertanian.kuantitas
+        hasil_pertanian_a.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
