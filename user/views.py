@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from user.permission import is_admin  # Ensure this is defined and correctly imported
+from rest_framework.permissions import IsAuthenticated
+from user.permission import is_admin  
 from .models import User, Pemerintah, Petani, Admin
 from .serializers import (
     UserSerializer, PemerintahSerializerPost, PemerintahSerializerGet,
