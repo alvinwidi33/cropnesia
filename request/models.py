@@ -13,3 +13,6 @@ class Request(models.Model):
     datetime_request=models.DateTimeField(auto_now=True)
     message = models.CharField(max_length=2048, blank=False, null=False, default="default_negosiasi")
     is_delete = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-datetime_request"]
