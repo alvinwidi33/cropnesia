@@ -36,8 +36,8 @@ def get_user_view(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([is_admin])
+@authentication_classes([TokenAuthentication])
+@permission_classes([is_admin])
 def add_user(request):
     dataUser = request.data
     email = dataUser['email']
