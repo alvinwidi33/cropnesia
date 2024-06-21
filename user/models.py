@@ -23,7 +23,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=255, blank=False)
     role = models.CharField(max_length=255, choices=ROLES, default="Petani")
     daerah = models.CharField(max_length=255, choices=DAERAH, blank=False)
-
+    datetime_created = models.DateTimeField(auto_now=True)
     groups = models.ManyToManyField(
         Group,
         related_name='custom_user_set', 
