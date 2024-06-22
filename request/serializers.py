@@ -7,9 +7,9 @@ class RequestSerializerGet(serializers.ModelSerializer):
     id_pemerintah_request = PemerintahSerializerGet()
     class Meta:
         model = Request
-        fields = ("id","id_pemerintah_request","id_hasil_pertanian","status_request","datetime_request")
+        fields = ("id","id_pemerintah_request","id_hasil_pertanian","status_request","datetime_request","jumlah_diminta")
 
 class RequestSerializerPost(serializers.ModelSerializer):
     class Meta:
         model = Request
-        fields = ("id","id_pemerintah_request","id_hasil_pertanian","status_request","datetime_request")
+        fields = ("id","id_pemerintah_request","id_hasil_pertanian","status_request","datetime_request","jumlah_diminta")

@@ -39,7 +39,8 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         related_query_name='user',
     )
-
+    class Meta:
+        ordering = ["datetime_created"]
 class Pemerintah(models.Model):
     pemerintah_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='pemerintah_user')

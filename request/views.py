@@ -5,9 +5,6 @@ from rest_framework import status
 from hasil_pertanian.models import HasilPertanian
 from request.models import Request
 from request.serializers import *
-from django.shortcuts import get_object_or_404
-
-from tanaman.models import Tanaman
 
 @api_view(['GET'])
 def get_list_request(request,id_pemerintah_request):
@@ -44,26 +41,29 @@ def verify_request(request, id):
         daerah_a = hasil_pertanian_a.id_tanaman.daerah.user.daerah
         daerah_b = pemerintah_b.user.daerah
 
+        # Use jumlah_diminta to transfer the correct amount
+        jumlah_diminta = permintaan.jumlah_diminta
+
         # Check if Pemerintah B has the crop
         try:
             hasil_pertanian_b = HasilPertanian.objects.get(
                 id_tanaman=hasil_pertanian_a.id_tanaman,
                 id_tanaman__daerah__user__daerah=daerah_b
             )
-            hasil_pertanian_b.kuantitas += hasil_pertanian_a.kuantitas
+            hasil_pertanian_b.kuantitas += jumlah_diminta
             hasil_pertanian_b.save()
         except HasilPertanian.DoesNotExist:
             # If Pemerintah B doesn't have the crop, create a new entry
             HasilPertanian.objects.create(
                 id_tanaman=hasil_pertanian_a.id_tanaman,
-                kuantitas=hasil_pertanian_a.kuantitas,
+                kuantitas=jumlah_diminta,
                 harga_hasil_pertanian=hasil_pertanian_a.harga_hasil_pertanian,
                 status_panen=hasil_pertanian_a.status_panen,
                 daerah=daerah_b  # Set daerah to Pemerintah B's daerah
             )
 
         # Subtract the quantity from Pemerintah A
-        hasil_pertanian_a.kuantitas -= permintaan.id_hasil_pertanian.kuantitas
+        hasil_pertanian_a.kuantitas -= jumlah_diminta
         hasil_pertanian_a.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
