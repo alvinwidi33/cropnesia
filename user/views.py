@@ -168,7 +168,7 @@ def get_list_user(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def get_token_by_user(request, token_key):
+def get_user_by_token(request, token_key):
     try:
         token = Token.objects.get(key=token_key)
         user = token.user
